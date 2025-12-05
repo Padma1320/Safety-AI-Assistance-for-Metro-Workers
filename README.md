@@ -1,35 +1,49 @@
-# Safety AI Assistance for Metro Workers
+# Metro Tunnel Worker Safety AI System
 
-## Project Overview
-Tunnel construction for metro projects exposes workers to critical hazards such as gas leaks, structural instability, and poor visibility. This project, **Tunnel Twin AI**, integrates Computer Vision for PPE detection, Sensor Anomaly Detection for environmental hazards, and A* pathfinding for evacuation simulation into a unified real-time risk assessment platform.
+This project simulates an AI-assisted safety monitoring system for metro tunnel workers by fusing computer vision–style PPE flags with environmental sensor data and automated evacuation planning.
 
-## Objectives
-*   **PPE Compliance:** Detect personal protective equipment (helmets, vests) using YOLOv8.
-*   **Hazard Identification:** Identify anomalous conditions like gas leaks and vibrations using Isolation Forest.
-*   **Risk Scoring:** Compute real-time risk scores by fusing visual and sensor data.
-*   **Evacuation Planning:** Simulate optimal evacuation routes using the A* algorithm.
-*   **Visualization:** Provide supervisors with real-time 3D dashboards of worker safety status.
+## Overview
 
-## Tech Stack
-*   **Core:** Python, NumPy, Pandas
-*   **AI/ML:** YOLOv8 (Object Detection), Isolation Forest (Anomaly Detection), Scikit-learn
-*   **Simulation & Logic:** A* Algorithm (Pathfinding), NetworkX
-*   **Visualization:** Plotly, Matplotlib
+The system focuses on four core capabilities:
+
+- Synthetic data generation for underground tunnel environments  
+- Anomaly detection on multi-sensor time-series data  
+- Risk scoring and worker safety classification  
+- Evacuation path planning using grid-based A* search  
+
+All experiments are implemented in the `metro_work1-1.ipynb` notebook. [file:22]
 
 ## Methodology
-1.  **Data Simulation:** Generated synthetic datasets for environmental variables (Gas, Vibration, Temperature) and worker coordinates.
-2.  **Anomaly Detection:** Implemented Isolation Forest to detect statistical outliers in sensor streams (simulating leaks or structural stress).
-3.  **Risk Logic Engine:** Developed a fusion algorithm that categorizes safety status (Safe/Moderate/High) based on combined CV flags and sensor anomalies.
-4.  **Pathfinding:** Modeled the tunnel layout as a grid graph and utilized the A* algorithm to compute the shortest safe exit path for workers in high-risk zones.
+
+1. **Data Simulation**  
+   Generated synthetic time-series data for 10 workers, including gas concentration, vibration level, temperature, and worker coordinates to emulate underground tunnel conditions and hazard scenarios. [file:22]
+
+2. **Anomaly Detection**  
+   Applied Isolation Forest–based anomaly detection on gas and vibration streams to flag abnormal readings that may indicate leaks or structural stress, adding boolean anomaly indicators (`sensor_gas_anomaly`, `sensor_vibration_anomaly`). [file:22]
+
+3. **Risk Logic Engine**  
+   Designed a risk-scoring pipeline that fuses sensor anomaly flags with PPE/compliance flags (e.g., helmet/vest status in a real deployment) to compute a numerical `risk_score` and assign each worker a categorical `risk_level` of **Safe**, **Moderate**, or **High**. [file:22]
+
+4. **Pathfinding & Evacuation Planning**  
+   Modeled the tunnel as a grid graph and used the A* pathfinding algorithm to compute the shortest evacuation route from each worker’s position to the nearest safe exit, recording an `evacuation_path_length` per worker. [file:22]
 
 ## Key Results
-*   **Integrated Monitoring:** Successfully combined computer vision and sensor data streams for holistic safety analysis.
-*   **Automated Risk Assessment:** Real-time classification of worker risk levels based on environmental factors.
-*   **Dynamic Evacuation:** Automated generation of safe exit routes during simulated hazard events.
-*   **3D Visualization:** Developed a functional prototype dashboard for spatial monitoring of worker locations and hazard zones.
 
-## Future Scope
-*   **Edge Deployment:** Optimization of models for NVIDIA Jetson/Raspberry Pi for low-latency onsite processing.
-*   **Hardware Integration:** Integration with physical IoT sensor nodes (ESP32) for live data telemetry.
-*   **Thermal Imaging:** Incorporation of thermal vision for worker detection in low-visibility smoke conditions.
+- **Scenario Coverage**  
+  Simulated 10 workers across multiple time steps, producing labeled records with time, worker ID, coordinates, gas, vibration, temperature, anomaly flags, risk score, and risk level. [file:22]
+
+- **Risk & Evacuation Outcomes**  
+  Identified **3 workers** requiring evacuation and computed individualized shortest paths (up to **94 units** in path length). The experiments surfaced **3 PPE violations**, **50 gas anomalies**, **50 vibration anomalies**, and **1 smoke incident**, illustrating how fused sensor and compliance signals can drive automated, risk-based evacuation planning. [file:22]
+
+## Repository Structure
+
+- `metro_work1-1.ipynb` – Main experimentation notebook containing data simulation, anomaly detection, risk logic, and A* pathfinding workflows. [file:22]
+
+## Future Work
+
+- **Real-Time Visualization:** Build an interactive dashboard (e.g., Streamlit/Plotly) to visualize worker locations, anomaly events, and evacuation paths in real time.  
+- **Edge Deployment:** Optimize models and pipelines for NVIDIA Jetson / Raspberry Pi to enable low-latency, on-site processing in tunnel environments.  
+- **Hardware Integration:** Integrate the system with physical IoT sensor nodes (e.g., ESP32) to stream live gas, vibration, temperature, and PPE-status data into the risk engine.  
+- **Thermal Imaging:** Incorporate thermal vision to maintain reliable worker detection and localization under low-visibility conditions such as smoke or dust.  
+
 
